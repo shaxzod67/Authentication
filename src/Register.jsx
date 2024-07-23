@@ -3,20 +3,20 @@ import { register } from "./Server/authServer";
 import "./App.css";
 import { Link, useNavigate } from "react-router-dom";
 import { notification } from "antd";
+import { setToken } from "./utils/localStore";
 
 export const Register = () => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const navigate = useNavigate(); // Move this line outside of the handlesubmit function
 
   const handlesubmit = async (e) => {
     e.preventDefault();
     const data = {
-      email,
+      username,
       password,
-      name,
     };
+    console.log(data);
     try {
       const res = await register(data);
       notification.success({
@@ -24,15 +24,17 @@ export const Register = () => {
         description: "You shot well",
       });
       console.log(res);
-      setName("");
-      setEmail("");
+      const token = res.token;
+      console.log(token);
+      setToken(token)
+      setUsername("");
       setPassword("");
       navigate("/home"); // Now this works correctly
     } catch (error) {
-      notification.error({
-        message: error.response?.data?.message || "Registration failed",
-        description: "An error occurred",
-      });
+      // notification.error({
+      //   message: error.response?.data?.message || "Registration failed",
+      //   description: "An error occurred",
+      // });
       console.error("Error registering user:", error);
     }
     // window.location.reload();
@@ -45,17 +47,11 @@ export const Register = () => {
         <input
           type="text"
           placeholder="Username"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          name="name"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          name="username"
         />
-        <input
-          type="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          name="email"
-        />
+       
         <input
           type="password"
           placeholder="Password"

@@ -6,21 +6,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { notification } from "antd";
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // Move this line inside the component
 
   const handlesubmit1 = async (e) => {
     e.preventDefault();
     const data = {
-      email,
+      username,
       password,
     };
     try {
       const res = await login(data);
       setToken(res.token);
       console.log("Returned value:", res);
-      setEmail("");
+      setUsername("");
       setPassword("");
       navigate("/home");
     } catch (error) {
@@ -38,11 +38,11 @@ function Login() {
       <form onSubmit={handlesubmit1}>
         <h1>Sign In</h1>
         <input
-          type="email"
+          type="text"
           placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          name="email"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          name="username"
         />
         <input
           type="password"
