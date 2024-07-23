@@ -1,54 +1,42 @@
 import React, { useState } from "react";
-import { register } from "./Server/authServer";
+import { login } from "./Server/authServer";
+import { setToken } from "./utils/localStore";
 import "./App.css";
 import { Link, useNavigate } from "react-router-dom";
 import { notification } from "antd";
 
-export const Register = () => {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const navigate = useNavigate(); // Move this line outside of the handlesubmit function
+  const navigate = useNavigate(); // Move this line inside the component
 
-  const handlesubmit = async (e) => {
+  const handlesubmit1 = async (e) => {
     e.preventDefault();
     const data = {
       email,
       password,
-      name,
     };
     try {
-      const res = await register(data);
-      notification.success({
-        message: "Information added",
-        description: "You shot well",
-      });
-      console.log(res);
-      setName("");
+      const res = await login(data);
+      setToken(res.token);
+      console.log("Returned value:", res);
       setEmail("");
       setPassword("");
-      navigate("/home"); // Now this works correctly
+      navigate("/home");
     } catch (error) {
       notification.error({
-        message: error.response?.data?.message || "Registration failed",
+        message: error.response?.data?.message || "Login failed",
         description: "An error occurred",
       });
-      console.error("Error registering user:", error);
+      console.error("Error logging in user:", error);
     }
     // window.location.reload();
   };
 
   return (
     <div className="register">
-      <form onSubmit={handlesubmit}>
-        <h1>SignUp</h1>
-        <input
-          type="text"
-          placeholder="Username"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          name="name"
-        />
+      <form onSubmit={handlesubmit1}>
+        <h1>Sign In</h1>
         <input
           type="email"
           placeholder="E-mail"
@@ -65,10 +53,11 @@ export const Register = () => {
         />
         <button type="submit">Submit</button>
         <p>
-          If you have a user <Link to="/login">Login</Link>
+          If you do not have a user <Link to="/">SignUp</Link>
         </p>
       </form>
-      <br />
     </div>
   );
-};
+}
+
+export default Login;
