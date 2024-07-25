@@ -5,6 +5,8 @@ import { getToken, removeToken } from "./utils/localStore";
 import { Route, Routes } from "react-router-dom";
 import Login from "./login";
 import Home from "./Home";
+import Profil from "./profil";
+import Fullname from "./fullname";
 
 const App = () => {
   // const [user, setUser] = useState(null);
@@ -34,6 +36,8 @@ const App = () => {
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/profil" element={<Profil />} />
+        <Route path="/fullname" element={<Fullname />} />
       </Routes>
     </div>
   );
