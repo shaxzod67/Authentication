@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import axios from "./api";
 
 export async function register(data) {
@@ -35,19 +34,18 @@ export const profil = async (e) => {
   return resProfil.data;
 };
 
-export const upload = (file) => {
+export const upload = async (data) => {
   const token = localStorage.getItem("token");
-  const resProfil = axios.post("/file/upload/folder_name", file, {
-    
+  const resImg = await axios.post("/file/upload/folder_name", data, {
     headers: {
       Authorization: token,
     },
   });
-  console.log("avatar data", resProfil.data);
-  return resProfil.data;
+  console.log("avatar data", resImg.data);
+  return resImg.data;
 };
 
-export const nameFull = async () => {
+export const nameFull = async (data) => {
   const token = localStorage.getItem("token");
   const fullname = await axios.put("/auth", data, {
     headers: {
@@ -56,4 +54,21 @@ export const nameFull = async () => {
   });
   console.log("Form data", fullname.data);
   return fullname.data;
+};
+
+export const services = async (data) => {
+  const token = localStorage.getItem("token");
+  const servicess = await axios.post("/service", data, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  console.log("services data", servicess.data);
+  return servicess.data;
+};
+
+export const serviceGet = async (data) => {
+  const serviceGetData = await axios.get("/service", data);
+  console.log("servicesGetData data", serviceGetData.data);
+  return serviceGetData.data;
 };

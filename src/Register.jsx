@@ -26,16 +26,24 @@ export const Register = () => {
       console.log(res);
       const token = res.token;
       console.log(token);
-      setToken(token)
+      setToken(token);
       setUsername("");
       setPassword("");
       navigate("/home"); // Now this works correctly
     } catch (error) {
-      // notification.error({
-      //   message: error.response?.data?.message || "Registration failed",
-      //   description: "An error occurred",
-      // });
-      console.error("Error registering user:", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        notification.error({
+          message: error.response.data.message,
+          description: "An error occurred",
+        });
+        console.log("xatoo", error.response.data.message);
+      } else {
+        console.error("Error registering user:", error);
+      }
     }
     // window.location.reload();
   };
@@ -51,7 +59,7 @@ export const Register = () => {
           onChange={(e) => setUsername(e.target.value)}
           name="username"
         />
-       
+
         <input
           type="password"
           placeholder="Password"

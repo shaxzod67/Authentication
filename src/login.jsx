@@ -19,6 +19,10 @@ function Login() {
     try {
       const res = await login(data);
       setToken(res.token);
+      notification.success({
+        message: "You entered the pages",
+        description: " ",
+      });
       console.log("Returned value:", res);
       setUsername("");
       setPassword("");
@@ -39,7 +43,7 @@ function Login() {
         <h1>Sign In</h1>
         <input
           type="text"
-          placeholder="E-mail"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           name="username"
